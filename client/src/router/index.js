@@ -4,21 +4,14 @@ const router = createRouter({
     history: createWebHistory(),
     routes: [
         {
+            path: '/',
+            name: 'home',
+            component: () => import('../views/HomePage.vue'),         
+        },
+        {
             path: '/login',
             name: 'login',
-            component: () => import('../views/auth/AuthPage.vue'),
-            children: [
-                {
-                    path: '/login',
-                    name: 'login',
-                    component: () => import('../views/auth/LoginPage.vue')
-                },
-                {
-                    path: '/register',
-                    name: 'register',
-                    component: () => import('../views/auth/RegisterPage.vue')
-                }
-            ]
+            component: () => import('../views/LoginPage.vue'),
         }
     ]
 });
