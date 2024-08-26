@@ -10,8 +10,9 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item"><RouterLink class="nav-link" to="/">Home</RouterLink></li>
-                        <li class="nav-item"><a class="nav-link" href="#">Blog</a></li>
-                        <li class="nav-item"><RouterLink class="nav-link" to="/login">Login</RouterLink></li>
+                        <li class="nav-item"><RouterLink class="nav-link" to="/blog" v-if="authStore.isAuthenticated">Blog</RouterLink></li>
+                        <li class="nav-item"><RouterLink class="nav-link" to="/login" v-if="!authStore.isAuthenticated">Login</RouterLink></li>
+                        <li class="nav-item"><a class="nav-link" href="#" @click="logout" v-if="authStore.isAuthenticated">Logout</a></li>
                     </ul>
                 </div>
             </div>
@@ -20,7 +21,17 @@
 </template>
 
 <script setup>
-import { RouterLink } from 'vue-router'
+import { RouterLink } from 'vue-router';
+import { useAuthStore } from '@/store/auth' // Import the auth store
+import { useRouter } from 'vue-router'
+
+const authStore = useAuthStore()
+const router = useRouter()
+
+const logout = () => {
+    authStore.logout()
+    router.push('/login')
+}
 
 </script>
 

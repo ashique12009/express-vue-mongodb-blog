@@ -1,7 +1,7 @@
 <script setup>
 import { RouterView, useRoute } from 'vue-router'
-import Navigation from './components/Navigation.vue'
 import Footer from './components/Footer.vue'
+import Header from './views/Header.vue';
 
 const route = useRoute();
 
@@ -11,7 +11,7 @@ const isLoginPage = route.path === '/login';
 
 <template>
     <div>
-        <Navigation />
+        <Header />
         <RouterView />
         <Footer />
     </div>

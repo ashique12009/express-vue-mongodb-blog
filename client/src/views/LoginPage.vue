@@ -31,7 +31,8 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import axios from 'axios'
+import { useAuthStore } from '@/store/auth' // Import pinia store
+import axios from '@/services/axios'
 
 // Define reactive variables
 const email = ref('')
@@ -41,17 +42,21 @@ const errorMessage = ref('')
 // Define router
 const router = useRouter()
 
+// Define auth store
+const authStore = useAuthStore()
+
 // Define submit function
 const loginSubmit = async () => {
     try {
         errorMessage.value = ''
 
-        const response = await axios.post('http://localhost:8080/api/login', {
+        const response = await axios.post('/login', {
             email: email.value,
             password: password.value
         })
 
         if (response.data.user) {
+            authStore.setUser(response.data.user) // Insert user data into store
             router.push('/dashboard')
         }
         else {

@@ -55,11 +55,17 @@ const loginHandler = async (request, response) => {
                 return response.json({ error: "Invalid email or password" });
             }
 
+            // Create a session for the user
+            request.session.userId = user._id;
+            request.session.userEmail = user.email;
+
             return response.status(200).json({ message: "Login successful", user: user });
-        } else {
+        } 
+        else {
             return response.json({ error: "Invalid email or password" });
         }
-    } catch (error) {
+    } 
+    catch (error) {
         console.log("Input Error or Server Error", error);
     }
 }
