@@ -5,6 +5,8 @@ import cors from 'cors';
 import router from './view/route.js';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
+import cookieParser from 'cookie-parser';
+import bodyParser from 'body-parser';
 
 const app = express();
 
@@ -15,17 +17,17 @@ app.use(cors({ origin: ['http://localhost:3000'], credentials: true, exposedHead
 dotenv.config();
 connectDB();
 
+// Cookie Parser
+app.use(cookieParser());
+app.use(bodyParser.json());
+
 // Session Configuration
 app.use(session({
     secret: 'session-secret', // Replace with a strong secret key
     resave: false,
     saveUninitialized: false,
-    store: MongoStore.create({
-        mongoUrl: process.env.MONGO_URI,
-        collectionName: 'sessions'
-    }),
     cookie: {
-        maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
+        maxAge: 1000 * 60 * 60, // 1 hour
         secure: false, // Set to true if using HTTPS
         httpOnly: true,
         sameSite: 'lax'

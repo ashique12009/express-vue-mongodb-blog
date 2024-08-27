@@ -23,30 +23,16 @@ const router = createRouter({
             path: '/dashboard',
             name: 'dashboard',
             component: () => import('../views/admin/DashboardPage.vue'),
-            beforeEnter: (to, from, next) => {
-                const authStore = useAuthStore()
-                console.log('authStore.isAuthenticated '+authStore.isAuthenticated)
-                if (authStore.isAuthenticated) {
-                    next()
-                } 
-                else {
-                    next('/login')
-                }
+            meta: {
+                requiresAuth: true
             }
         },
         {
             path: '/blog',
             name: 'blog',
             component: () => import('../views/blog/BlogItem.vue'),
-            beforeEnter: (to, from, next) => {
-                const authStore = useAuthStore()
-                console.log('authStore.isAuthenticated '+authStore.isAuthenticated)
-                if (authStore.isAuthenticated) {
-                    next()
-                } 
-                else {
-                    next('/login')
-                }
+            meta: {
+                requiresAuth: true
             }
         },
         {
@@ -56,5 +42,27 @@ const router = createRouter({
         }
     ]
 });
+
+router.beforeEach(async (to, from, next) => {
+    const authStore = useAuthStore()
+
+    // Initialize the auth state from localStorage
+    authStore.initializeAuthState()
+
+    // If the user is trying to access a protected route, fetch session data
+    if (to.matched.some(record => record.meta.requiresAuth)) {
+        if (!authStore.isAuthenticated) {
+            await authStore.fetchSessionData()
+        }
+
+        if (authStore.isAuthenticated) {
+            next()
+        } else {
+            next('/login')
+        }
+    } else {
+        next()
+    }
+})
 
 export default router

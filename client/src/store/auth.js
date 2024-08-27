@@ -1,25 +1,32 @@
 import { defineStore } from "pinia"
-import { ref } from "vue"
+import axios from '@/services/axios'
 
-export const useAuthStore = defineStore('auth', () => {
-        const user = ref(null)
-        const isAuthenticated = ref(false)
-
-        const setUser = (userData) => {
-            user.value = userData
-            isAuthenticated.value = true
-        }
-
-        const logout = () => {
-            user.value = null
-            isAuthenticated.value = false
-        }
-
-        return {
-            user,
-            isAuthenticated,
-            setUser,
-            logout
+export const useAuthStore = defineStore('auth', {
+    state: () => ({
+        isAuthenticated: false,
+        userEmail: ''
+    }),
+    actions: {
+        async fetchSessionData() {
+            try {
+                const response = await axios.get('/get-session-data')
+                if (response.data.success) {
+                    this.isAuthenticated = true
+                    this.userEmail = response.data.user
+                } else {
+                    this.isAuthenticated = false
+                }
+            } catch (error) {
+                console.error('Error fetching session data:', error)
+                this.isAuthenticated = false
+            }
+        },
+        initializeAuthState() {
+            this.isAuthenticated = false
+        },
+        logout() {
+            this.isAuthenticated = false
+            this.userEmail = ''
         }
     }
-)
+})

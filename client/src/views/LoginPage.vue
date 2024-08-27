@@ -39,11 +39,11 @@ const email = ref('')
 const password = ref('')
 const errorMessage = ref('')
 
+// Define pinia store
+const authStore = useAuthStore()
+
 // Define router
 const router = useRouter()
-
-// Define auth store
-const authStore = useAuthStore()
 
 // Define submit function
 const loginSubmit = async () => {
@@ -56,7 +56,9 @@ const loginSubmit = async () => {
         })
 
         if (response.data.user) {
-            authStore.setUser(response.data.user) // Insert user data into store
+            // Call fetch user session data in store
+            authStore.fetchSessionData()
+
             router.push('/dashboard')
         }
         else {

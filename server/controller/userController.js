@@ -70,4 +70,38 @@ const loginHandler = async (request, response) => {
     }
 }
 
-export { signUpHandler, loginHandler };
+const getSessionData = (request, response) => {
+    try {
+        if (request.session.userId) {
+            return response.status(200).json({ success: true, user: request.session.userEmail });
+        }
+        else {
+            return response.status(200).json({ success: false });
+        }
+    } 
+    catch (error) {
+        console.log("Session error: ", error);
+    }
+}
+
+const logoutHandler = (request, response) => {
+    try {
+        // Destroy the session
+        request.session.destroy((err) => {
+            if (err) {
+                console.log('Logout error: ', err);
+                return response.status(500).json({ error: 'Logout error' });
+            }
+
+            // Optionally clear the cookie
+            response.clearCookie('connect.sid', { path : '/' });
+
+            return response.status(200).json({ message: 'Logout successful' });
+        });
+    } 
+    catch (error) {
+        console.log("Logout error: ", error);    
+    }
+}
+
+export { signUpHandler, loginHandler, getSessionData, logoutHandler };
