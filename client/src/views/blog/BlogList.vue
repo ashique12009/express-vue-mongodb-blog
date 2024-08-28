@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <h1>Blog Item</h1>
+    <div class="container py-5 min-vh-100">
+        <h1>Blog List</h1>
     </div>
 </template>
 

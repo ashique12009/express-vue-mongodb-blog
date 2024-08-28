@@ -1,5 +1,5 @@
 <template>
-    <div class="container py-5">
+    <div class="container py-5 min-vh-100">
         <h1 v-if="userEmail">Dashboard, welcome {{ userEmail }}</h1>
         <h1 v-else>Loading...</h1>
     </div>

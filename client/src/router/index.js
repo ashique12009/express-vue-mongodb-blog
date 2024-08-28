@@ -28,9 +28,9 @@ const router = createRouter({
             }
         },
         {
-            path: '/blog',
-            name: 'blog',
-            component: () => import('../views/blog/BlogItem.vue'),
+            path: '/blog-list',
+            name: 'blog-list',
+            component: () => import('../views/blog/BlogList.vue'),
             meta: {
                 requiresAuth: true
             }
