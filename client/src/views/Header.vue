@@ -9,7 +9,7 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
-                        <li class="nav-item"><RouterLink class="nav-link" to="/">Home {{ authStore.isAuthenticated }}</RouterLink></li>
+                        <li class="nav-item"><RouterLink class="nav-link" to="/">Home</RouterLink></li>
                         <li class="nav-item"><RouterLink class="nav-link" to="/blog" v-if="authStore.isAuthenticated">Blog</RouterLink></li>
                         <li class="nav-item"><RouterLink class="nav-link" to="/login" v-if="!authStore.isAuthenticated">Login</RouterLink></li>
                         <li class="nav-item"><a class="nav-link" href="#" @click.prevent="logout" v-if="authStore.isAuthenticated">Logout</a></li>
