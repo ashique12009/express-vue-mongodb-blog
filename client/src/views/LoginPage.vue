@@ -22,8 +22,11 @@
                     Remember me
                 </label>
             </div>
-            <button class="btn btn-primary w-100 py-2" type="submit">Sign in</button>
-            <p class="mt-5 mb-3 text-body-secondary">© 2024</p>
+            <button class="btn btn-primary w-100 py-2" type="submit" :disabled="isLoading">Sign in</button>
+            <p class="mt-1 mb-1 text-body-secondary">© 2024</p>
+            <div v-if="isLoading" class="text-center mt-3">
+                <img src="@/assets/spinner-5.gif" />
+            </div>
         </form>
     </main>
 </template>
@@ -38,6 +41,7 @@ import axios from '@/services/axios'
 const email = ref('')
 const password = ref('')
 const errorMessage = ref('')
+const isLoading = ref(false)
 
 // Define pinia store
 const authStore = useAuthStore()
@@ -49,7 +53,7 @@ const router = useRouter()
 const loginSubmit = async () => {
     try {
         errorMessage.value = ''
-
+        isLoading.value = true
         const response = await axios.post('/login', {
             email: email.value,
             password: password.value
@@ -67,6 +71,9 @@ const loginSubmit = async () => {
     } 
     catch (error) {
         console.log('ERROR: ' + error)
+    }
+    finally {
+        isLoading.value = false
     }
 }
 </script>
