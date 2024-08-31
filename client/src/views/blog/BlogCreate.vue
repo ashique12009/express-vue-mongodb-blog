@@ -3,12 +3,12 @@
         <h1>Add Blog</h1>
         <form>
             <div class="mb-3">
-                <label for="exampleFormControlInput1" class="form-label">Email address</label>
+                <label for="exampleFormControlInput1" class="form-label">Title</label>
                 <input type="text" class="form-control" id="exampleFormControlInput1" v-model="title">
             </div>
             <div class="mb-3">
-                <label for="exampleFormControlTextarea1" class="form-label">Example textarea</label>
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" v-model="description"></textarea>
+                <label for="exampleFormControlTextarea1" class="form-label">Body</label>
+                <ckeditor v-model="description" :editor="ClassicEditor" :config="editorConfig" />
             </div>
             <div class="mb-3">
                 <label for="exampleFormControlInput2" class="form-label">Author</label>
@@ -27,6 +27,8 @@
 import { ref } from 'vue'
 import axios from '@/services/axios'
 import { useRouter } from 'vue-router'
+import { ClassicEditor, Bold, Essentials, Italic, Mention, Paragraph, Undo } from 'ckeditor5'
+import 'ckeditor5/ckeditor5.css'
 
 const router = useRouter()
 
@@ -34,6 +36,10 @@ const title = ref('')
 const description = ref('')
 const author = ref('')
 const isLoading = ref(false)
+const editorConfig = ref({
+    plugins: [ Bold, Essentials, Italic, Mention, Paragraph, Undo ],
+    toolbar: [ 'undo', 'redo', '|', 'bold', 'italic' ],
+})
 
 const submitBlog = async () => {
     try {
@@ -45,9 +51,9 @@ const submitBlog = async () => {
         })
 
         router.push('/blog-list')
-    } 
+    }
     catch (error) {
-        console.log('ERROR blog submission: ' + error)    
+        console.log('ERROR blog submission: ' + error)
     }
     finally {
         isLoading.value = false

@@ -43,4 +43,15 @@ const createPost = async (request, response) => {
     }
 }
 
-export { getPosts, createPost };
+const getPost = async (request, response) => {
+    try {
+        const { id } = request.params;
+        const post = await Post.findById(id);
+        return response.status(200).json({ success: true, post: post });
+    } 
+    catch (error) {
+        console.log("Fetching error: ", error);    
+    }
+}
+
+export { getPosts, createPost, getPost };
