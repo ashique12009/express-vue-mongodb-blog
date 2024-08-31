@@ -18,10 +18,12 @@
             <tbody>
                 <tr v-for="(post, index) in posts" :key="post._id">
                     <td>{{ post.title }}</td>
-                    <td>{{ post.description }}</td>
+                    <td>{{ excerpt(post.description) }}</td>
                     <td>{{ post.author }}</td>
                     <td>{{ new Date(post.date).toLocaleDateString() }}</td>
-                    <td><button class="btn btn-sm btn-primary me-2">Edit</button>
+                    <td>
+                        <button class="btn btn-sm btn-secondary me-2">View</button>
+                        <button class="btn btn-sm btn-primary me-2">Edit</button>
                         <button class="btn btn-sm btn-danger">Delete</button>
                     </td> 
                 </tr>
@@ -92,6 +94,13 @@ const addBlog = () => {
 onMounted(() => {
     fetchPosts();
 });
+
+const excerpt = (description) => {
+    if (description.length > 50) {
+        return description.substring(0, 50) + '...'
+    }
+    return description
+}
 
 </script>
 
