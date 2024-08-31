@@ -4,6 +4,8 @@
         <div v-if="isLoading" class="text-center mt-3">
             <img src="@/assets/spinner-5.gif" />
         </div>
+
+        <div>Total Posts: {{ totalPosts }}</div>
         <!-- Blog Posts Table -->
         <table class="table table-striped">
             <thead>
@@ -18,7 +20,7 @@
             <tbody>
                 <tr v-for="(post, index) in posts" :key="post._id">
                     <td>{{ post.title }}</td>
-                    <td>{{ excerpt(post.description) }}</td>
+                    <td v-html="excerpt(post.description)"></td>
                     <td>{{ post.author }}</td>
                     <td>{{ new Date(post.date).toLocaleDateString() }}</td>
                     <td>
@@ -57,7 +59,7 @@ const posts = ref([])
 const totalPosts = ref(0)
 const totalPages = ref(0)
 const currentPage = ref(1)
-const limit = ref(3)
+const limit = ref(15)
 const isLoading = ref(false)
 
 const router = useRouter()
