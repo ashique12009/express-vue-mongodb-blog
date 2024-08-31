@@ -25,7 +25,7 @@
                     <td>{{ new Date(post.date).toLocaleDateString() }}</td>
                     <td>
                         <button class="btn btn-sm btn-secondary me-2" @click="viewBlog(post._id)">View</button>
-                        <button class="btn btn-sm btn-primary me-2">Edit</button>
+                        <button class="btn btn-sm btn-primary me-2" @click="editPost(post._id)">Edit</button>
                         <button class="btn btn-sm btn-danger" @click="deletePost(post._id)">Delete</button>
                     </td> 
                 </tr>
@@ -121,6 +121,10 @@ const deletePost = async (mongoId) => {
     finally {
         isLoading.value = false
     }
+}
+
+const editPost = (mongoId) => {
+    router.push('/blog-edit/' + mongoId)
 }
 
 </script>

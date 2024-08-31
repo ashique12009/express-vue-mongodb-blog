@@ -71,4 +71,25 @@ const deletePost = async (request, response) => {
     }
 }
 
-export { getPosts, createPost, getPost, deletePost };
+const editPost = async (request, response) => {
+    try {
+        const { id } = request.params;
+        const { title, description, author } = request.body;
+        const post = await Post.findByIdAndUpdate(id, 
+            { 
+                title: title, 
+                description: description, 
+                author: author 
+            }
+        );
+        if (!post) {
+            return response.status(404).json({ success: false, message: 'Post not found' });
+        }
+        return response.status(200).json({ success: true, post: post });
+    } 
+    catch (error) {
+        console.log("Edit error: ", error);
+    }
+}
+
+export { getPosts, createPost, getPost, deletePost, editPost };
