@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { signUpHandler, loginHandler, getSessionData, logoutHandler } from "../controller/userController.js";
-import { getPosts, createPost, getPost } from "../controller/postController.js";
+import { getPosts, createPost, getPost, deletePost } from "../controller/postController.js";
 
 const router = Router();
 
@@ -13,5 +13,6 @@ router.post('/logout', logoutHandler);
 router.get('/posts', getPosts);
 router.post('/posts', createPost);
 router.get('/post/:id', getPost);
+router.delete('/post/:id', deletePost);
 
 export default router;

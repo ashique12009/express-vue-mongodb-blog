@@ -57,4 +57,19 @@ const getPost = async (request, response) => {
     }
 }
 
-export { getPosts, createPost, getPost };
+const deletePost = async (request, response) => {
+    try {
+        const { id } = request.params;
+        const post = await Post.findByIdAndDelete(id);
+        console.log('DELETED POST',post);
+        if (!post) {
+            return response.status(404).json({ success: false, message: 'Post not found' });
+        }
+        return response.status(200).json({ success: true, message: 'Post deleted successfully' });
+    } 
+    catch (error) {
+        console.log("Delete error: ", error);
+    }
+}
+
+export { getPosts, createPost, getPost, deletePost };

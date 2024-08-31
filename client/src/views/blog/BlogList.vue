@@ -26,7 +26,7 @@
                     <td>
                         <button class="btn btn-sm btn-secondary me-2" @click="viewBlog(post._id)">View</button>
                         <button class="btn btn-sm btn-primary me-2">Edit</button>
-                        <button class="btn btn-sm btn-danger">Delete</button>
+                        <button class="btn btn-sm btn-danger" @click="deletePost(post._id)">Delete</button>
                     </td> 
                 </tr>
             </tbody>
@@ -106,6 +106,21 @@ const excerpt = (description) => {
 
 const viewBlog = (mongoId) => {
     router.push('/blog-view/' + mongoId)
+}
+
+const deletePost = async (mongoId) => {
+    try {
+        isLoading.value = true
+        const response = await axios.delete(`/post/${mongoId}`)
+
+        fetchPosts();
+    } 
+    catch (error) {
+        console.log('Deleting ERROR: ' + error)
+    }
+    finally {
+        isLoading.value = false
+    }
 }
 
 </script>
