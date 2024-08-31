@@ -1,24 +1,29 @@
 <template>
     <div class="container py-5 min-vh-100">
-        <h1>Blog List</h1>
+        <h1>Blog List <button class="btn btn-primary" @click="addBlog">Add Blog</button></h1>
+        <div v-if="isLoading" class="text-center mt-3">
+            <img src="@/assets/spinner-5.gif" />
+        </div>
         <!-- Blog Posts Table -->
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th scope="col">#</th>
                     <th scope="col">Title</th>
                     <th scope="col">Description</th>
                     <th scope="col">Author</th>
                     <th scope="col">Date</th>
+                    <th scope="col">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="(post, index) in posts" :key="post._id">
-                    <th scope="row">{{ index + 1 }}</th>
                     <td>{{ post.title }}</td>
                     <td>{{ post.description }}</td>
                     <td>{{ post.author }}</td>
                     <td>{{ new Date(post.date).toLocaleDateString() }}</td>
+                    <td><button class="btn btn-sm btn-primary me-2">Edit</button>
+                        <button class="btn btn-sm btn-danger">Delete</button>
+                    </td> 
                 </tr>
             </tbody>
         </table>
@@ -43,17 +48,22 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import axios from '@/services/axios'
+import { useRouter } from 'vue-router'
 
 // Reactive state variables
 const posts = ref([])
 const totalPosts = ref(0)
 const totalPages = ref(0)
 const currentPage = ref(1)
-const limit = ref(2)
+const limit = ref(3)
+const isLoading = ref(false)
+
+const router = useRouter()
 
 // Fetch posts from the api
 const fetchPosts = async (page = 1) => {
     try {
+        isLoading.value = true
         const response = await axios.get('/posts', {
             params: {
                 page: page,
@@ -69,6 +79,13 @@ const fetchPosts = async (page = 1) => {
     catch (error) {
         console.log('Fetching ERROR: ' + error)
     }
+    finally {
+        isLoading.value = false
+    }
+}
+
+const addBlog = () => {
+    router.push('/blog-create')
 }
 
 // Fetch posts when the component is mounted

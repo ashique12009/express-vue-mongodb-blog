@@ -22,7 +22,7 @@
 </template>
 
 <script setup>
-import { RouterLink } from 'vue-router';
+import { RouterLink } from 'vue-router'
 import { useAuthStore } from '@/store/auth' // Import the auth store
 import { useRouter } from 'vue-router'
 import axios from '@/services/axios'

@@ -36,6 +36,14 @@ const router = createRouter({
             }
         },
         {
+            path: '/blog-create',
+            name: 'blog-create',
+            component: () => import('../views/blog/BlogCreate.vue'),
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
             path: '/:pathMatch(.*)*',
             name: 'notFound',
             component: () => import('../views/NotFoundPage.vue')
@@ -43,7 +51,7 @@ const router = createRouter({
     ]
 });
 
-router.beforeEach(async (to, from, next) => {
+router.beforeEach(async (to, from) => {
     const authStore = useAuthStore()
 
     // Initialize the auth state from localStorage
@@ -56,12 +64,12 @@ router.beforeEach(async (to, from, next) => {
         }
 
         if (authStore.isAuthenticated) {
-            next()
+            return true // Allow navigation
         } else {
-            next('/login')
+            return { path: '/login' }
         }
     } else {
-        next()
+        return true // Allow navigation for non-protected routes
     }
 })
 

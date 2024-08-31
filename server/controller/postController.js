@@ -28,4 +28,19 @@ const getPosts = async (request, response) => {
     }
 }
 
-export { getPosts };
+const createPost = async (request, response) => {
+    try {
+        const { title, description, author } = request.body;
+        const newPost = new Post({
+            title: title,
+            description: description,
+            author: author
+        });
+        await newPost.save();
+        return response.status(200).json({ success: true, post: newPost, message: 'Post created successfully' });
+    } catch (error) {
+        console.log('Error creating post:', error);
+    }
+}
+
+export { getPosts, createPost };
