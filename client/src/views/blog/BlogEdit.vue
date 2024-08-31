@@ -17,7 +17,7 @@
                 <input type="text" class="form-control" id="authorInput" v-model="post.author">
             </div>
 
-            <button type="submit" class="btn btn-primary" @click.prevent="editPost">Update</button>
+            <button type="submit" class="btn btn-primary" @click.prevent="editPost" :disabled="isLoading">Update</button>
         </div>
 
         <div v-if="isLoading" class="text-center mt-3">
@@ -32,6 +32,8 @@ import axios from '@/services/axios'
 import { useRouter } from 'vue-router'
 import { ClassicEditor, Bold, Essentials, Italic, Mention, Paragraph, Undo } from 'ckeditor5'
 import 'ckeditor5/ckeditor5.css'
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 
 // Reactive state variables
 const post = ref({
@@ -81,13 +83,16 @@ const editPost = async () => {
             author: post.value.author
         })
 
-        router.push('/blog-list')
+        toast.success(response.data.message, {
+            autoClose: 1000,
+            onClose: () => {
+                router.push('/blog-list')
+                isLoading.value = false
+            }
+        })
     } 
     catch (error) {
         console.log('Edit error', error)
-    }
-    finally {
-        isLoading.value = false
     }
 }
 </script>

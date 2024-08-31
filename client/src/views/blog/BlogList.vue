@@ -22,7 +22,7 @@
                     <td>{{ post.title }}</td>
                     <td v-html="excerpt(post.description)"></td>
                     <td>{{ post.author }}</td>
-                    <td>{{ new Date(post.date).toLocaleDateString() }}</td>
+                    <td>{{ formatDate(new Date(post.date).toLocaleDateString(), 'long') }}</td>
                     <td>
                         <button class="btn btn-sm btn-secondary me-2" @click="viewBlog(post._id)">View</button>
                         <button class="btn btn-sm btn-primary me-2" @click="editPost(post._id)">Edit</button>
@@ -53,6 +53,8 @@
 import { onMounted, ref } from 'vue'
 import axios from '@/services/axios'
 import { useRouter } from 'vue-router'
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 
 // Reactive state variables
 const posts = ref([])
@@ -113,7 +115,12 @@ const deletePost = async (mongoId) => {
         isLoading.value = true
         const response = await axios.delete(`/post/${mongoId}`)
 
-        fetchPosts();
+        toast.success(response.data.message, {
+            autoClose: 1000,
+            onClose: () => {
+                fetchPosts();
+            }
+        })
     } 
     catch (error) {
         console.log('Deleting ERROR: ' + error)
@@ -125,6 +132,17 @@ const deletePost = async (mongoId) => {
 
 const editPost = (mongoId) => {
     router.push('/blog-edit/' + mongoId)
+}
+
+const formatDate = (date, formatType) => {
+    const options = {
+        short: { year: 'numeric', month: 'short', day: 'numeric' },
+        medium: { year: 'numeric', month: 'short', day: 'numeric' },
+        long: { year: 'numeric', month: 'long', day: 'numeric' },
+        time: { hour: '2-digit', minute: '2-digit' }
+    }
+
+    return new Intl.DateTimeFormat('en-US', options[formatType]).format(new Date(date))
 }
 
 </script>

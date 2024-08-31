@@ -15,7 +15,7 @@
                 <input type="text" class="form-control" id="exampleFormControlInput2" v-model="author">
             </div>
 
-            <button type="submit" class="btn btn-primary" @click.prevent="submitBlog">Submit</button>
+            <button type="submit" class="btn btn-primary" @click.prevent="submitBlog" :disabled="isLoading">Submit</button>
         </form>
         <div v-if="isLoading" class="text-center mt-3">
             <img src="@/assets/spinner-5.gif" />
@@ -29,6 +29,8 @@ import axios from '@/services/axios'
 import { useRouter } from 'vue-router'
 import { ClassicEditor, Bold, Essentials, Italic, Mention, Paragraph, Undo } from 'ckeditor5'
 import 'ckeditor5/ckeditor5.css'
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 
 const router = useRouter()
 
@@ -50,13 +52,16 @@ const submitBlog = async () => {
             author: author.value
         })
 
-        router.push('/blog-list')
+        toast.success(response.data.message, {
+            autoClose: 1000,
+            onClose: () => {
+                router.push('/blog-list')
+                isLoading.value = false
+            }
+        })
     }
     catch (error) {
         console.log('ERROR blog submission: ' + error)
-    }
-    finally {
-        isLoading.value = false
     }
 }
 </script>

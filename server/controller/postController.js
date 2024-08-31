@@ -10,7 +10,7 @@ const getPosts = async (request, response) => {
         const offset = (pageNumer - 1) * limit;
 
         // Fetch the posts
-        const posts = await Post.find().skip(offset).limit(limit);
+        const posts = await Post.find().sort({ date: -1 }).skip(offset).limit(limit);
 
         // Get the total number of posts
         const totalPosts = await Post.countDocuments();
@@ -85,7 +85,7 @@ const editPost = async (request, response) => {
         if (!post) {
             return response.status(404).json({ success: false, message: 'Post not found' });
         }
-        return response.status(200).json({ success: true, post: post });
+        return response.status(200).json({ success: true, post: post, message: 'Post updated successfully' });
     } 
     catch (error) {
         console.log("Edit error: ", error);
