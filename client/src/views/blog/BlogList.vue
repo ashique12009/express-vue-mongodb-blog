@@ -22,7 +22,7 @@
                     <td>{{ post.author }}</td>
                     <td>{{ new Date(post.date).toLocaleDateString() }}</td>
                     <td>
-                        <button class="btn btn-sm btn-secondary me-2">View</button>
+                        <button class="btn btn-sm btn-secondary me-2" @click="viewBlog(post._id)">View</button>
                         <button class="btn btn-sm btn-primary me-2">Edit</button>
                         <button class="btn btn-sm btn-danger">Delete</button>
                     </td> 
@@ -100,6 +100,10 @@ const excerpt = (description) => {
         return description.substring(0, 50) + '...'
     }
     return description
+}
+
+const viewBlog = (mongoId) => {
+    router.push('/blog-view/' + mongoId)
 }
 
 </script>

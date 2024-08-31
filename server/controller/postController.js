@@ -47,6 +47,9 @@ const getPost = async (request, response) => {
     try {
         const { id } = request.params;
         const post = await Post.findById(id);
+        if (!post) {
+            return response.status(404).json({ success: false, message: 'Post not found' });
+        }
         return response.status(200).json({ success: true, post: post });
     } 
     catch (error) {
