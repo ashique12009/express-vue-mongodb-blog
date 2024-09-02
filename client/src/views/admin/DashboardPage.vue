@@ -3,9 +3,12 @@
         <h1 v-if="userEmail">Dashboard, welcome {{ userEmail }}</h1>
         <h1 v-else>Loading...</h1>
         <div class="row mt-3">
+            <div v-if="isLoading" class="text-center mt-3">
+                <img src="@/assets/spinner-5.gif" />
+            </div>
             <div class="col-xl-3 col-md-6">
                 <div class="card bg-primary text-white mb-4">
-                    <div class="card-body">Total Posts</div>
+                    <div class="card-body">Total Post</div>
                     <div class="card-footer d-flex align-items-center justify-content-between">
                         <span class="text-white">{{ totalPostsNumber }}</span>
                     </div>
@@ -29,7 +32,7 @@
             </div>
             <div class="col-xl-3 col-md-6">
                 <div class="card bg-danger text-white mb-4">
-                    <div class="card-body">Total Comments</div>
+                    <div class="card-body">Total Comment</div>
                     <div class="card-footer d-flex align-items-center justify-content-between">
                         <span class="text-white">{{ totalComments }}</span>
                     </div>
@@ -48,6 +51,7 @@ const totalPostsNumber = ref(0)
 const totalUsersNumber = ref(0)
 const totalPostNumberOfToday = ref(0)
 const totalComments = ref(0)
+const isLoading = ref(false)
 
 const getTotalPostsNumner = async () => {
     try {
@@ -99,6 +103,9 @@ onMounted(async () => {
     }
     catch (error) {
         console.log('ERROR fetching session data: ' + error)
+    }
+    finally {
+        isLoading.value = false
     }
 })
 
