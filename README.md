@@ -23,6 +23,6 @@ In the branch [deploy_the_build](https://github.com/ashique12009/express-vue-mon
 
  You only need to start the server (`cd server; nodemon server.js`).
 
- ## Demo
+## Demo
 
- https://github.com/ashique12009/express-vue-mongodb-blog/blob/main/demo.gif
+![alt text](https://github.com/ashique12009/express-vue-mongodb-blog/blob/main/demo.gif)
